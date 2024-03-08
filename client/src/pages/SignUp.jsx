@@ -26,7 +26,6 @@ const SignUp = () => {
       });
       const result = await res.json(); // result is the json object sent via server response (check inside api/controller/auth.controller.js)
       if (result.success === false) {
-        console.log(result.message);
         setError(result.message);
         setLoading(false);
         return;

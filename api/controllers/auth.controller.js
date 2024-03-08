@@ -12,6 +12,9 @@ export const signup = async (req, res, next) => {
     await newUser.save();
     res.status(201).json("user created successfully");
   } catch (err) {
+    if (err.code === 11000) {
+      return next(errorHandler(404, "User already exists"));
+    }
     next(err);
     // next(errorHandler(555,'custom error using error handler function'));
   }
@@ -27,7 +30,7 @@ export const signin = async (req, res, next) => {
   const { password: pass, ...restInfo } = validUser._doc;
 
   res
-    .cookie("access_token", token, { httpOnly: true })
+    .cookie("access_token", token, { httpOnly: true }) //maxAge is a convenience option that sets expires relative to the current time in milliseconds.
     .status(200)
     .json(restInfo);
 };
