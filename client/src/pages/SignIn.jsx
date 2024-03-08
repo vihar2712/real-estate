@@ -6,8 +6,9 @@ import {
   signInStart,
   signInSuccess,
 } from "../redux/user/userSlice";
+import OAuth from "./OAuth";
 
-const SignUp = () => {
+const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({});
@@ -70,7 +71,7 @@ const SignUp = () => {
         >
           {loading ? "loading" : "Sign In"}
         </button>
-
+        <OAuth signUp={false} />
         <p>
           Don't Have an account?{" "}
           <Link to={"/sign-up"}>
@@ -83,4 +84,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;

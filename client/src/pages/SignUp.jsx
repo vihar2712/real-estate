@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   signInFailure,
   signInStart,
   signInSuccess,
 } from "../redux/user/userSlice";
+import OAuth from "./OAuth";
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -77,7 +78,7 @@ const SignUp = () => {
         >
           {loading ? "loading" : "Sign Up"}
         </button>
-
+        <OAuth signUp={true} />
         <p>
           Have an account?{" "}
           <Link to={"/sign-in"}>
