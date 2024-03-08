@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch,useSelector } from "react-redux";
+import {
+  signInFailure,
+  signInStart,
+  signInSuccess,
+} from "../redux/user/userSlice";
 
 const SignUp = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(null);
-
+  const { loading, error } = useSelector((store) => store.user);
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -16,7 +21,7 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
+      dispatch(signInStart());
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
@@ -26,16 +31,13 @@ const SignUp = () => {
       });
       const result = await res.json(); // result is the json object sent via server response (check inside api/controller/auth.controller.js)
       if (result.success === false) {
-        setError(result.message);
-        setLoading(false);
+        dispatch(signInFailure(result.message));
         return;
       }
-      setLoading(false);
-      setError(null);
+      dispatch(signInSuccess(result));
       navigate("/sign-in");
     } catch (err) {
-      setError(err.message);
-      setLoading(false);
+      dispatch(signInFailure(err.message));
     }
   };
   return (

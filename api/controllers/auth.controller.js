@@ -7,10 +7,12 @@ export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
   const hashPassword = bcryptjs.hashSync(password);
   const newUser = new User({ username, email, password: hashPassword });
+  const { password: pass, ...restInfo } = newUser._doc;
 
   try {
     await newUser.save();
-    res.status(201).json("user created successfully");
+    // res.status(201).json("user created successfully");
+    res.status(201).json(restInfo);
   } catch (err) {
     if (err.code === 11000) {
       return next(errorHandler(404, "User already exists"));
