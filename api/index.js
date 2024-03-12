@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRoute from "./routes/user.route.js";
 import authRoute from "./routes/auth.route.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -17,6 +18,8 @@ mongoose
 
 const app = express();
 app.use(express.json()); // by default we are not allowed to send any JSON data to the server. this line helps with that
+
+app.use(cookieParser()); // used to get the access token from the cookie which is stored once user signs-in.
 
 app.listen(3000, () => {
   console.log("server listening on port 3000!!");
