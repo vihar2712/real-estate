@@ -14,7 +14,6 @@ const createToken = (validUser, res) => {
 };
 
 export const signup = async (req, res, next) => {
-  
   const { username, email, password, photo } = req.body; // photo will be default if not signed up using google auth
   const hashPassword = bcryptjs.hashSync(password);
   const newUser = new User({
