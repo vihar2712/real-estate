@@ -5,15 +5,10 @@ import jwt from "jsonwebtoken";
 
 const createToken = (validUser, res) => {
   const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET_KEY);
-  const { password: pass, ...restInfo } = validUser._doc;
-
-  res
-    .cookie("access_token", token, { httpOnly: true }) //maxAge is a convenience option that sets expires relative to the current time in milliseconds.
-    .status(200)
-    .json(restInfo);
+  res.cookie("access_token", token, { httpOnly: true }); //maxAge is a convenience option that sets expires relative to the current time in milliseconds.
 };
 
-export const signup = async (req, res, next) => {
+export const signUp = async (req, res, next) => {
   const { username, email, password, photo } = req.body; // photo will be default if not signed up using google auth
   const hashPassword = bcryptjs.hashSync(password);
   const newUser = new User({
@@ -22,6 +17,7 @@ export const signup = async (req, res, next) => {
     password: hashPassword,
     avatar: photo,
   });
+  createToken(newUser, res);
   const { password: pass, ...restInfo } = newUser._doc;
 
   try {
@@ -38,7 +34,7 @@ export const signup = async (req, res, next) => {
   }
 };
 
-export const signin = async (req, res, next) => {
+export const signIn = async (req, res, next) => {
   const { email, password } = req.body;
   const validUser = await User.findOne({ email });
   if (!validUser) return next(errorHandler(401, "user not found"));
@@ -46,6 +42,8 @@ export const signin = async (req, res, next) => {
   if (!validPassword) return next(errorHandler(401, "Wrong credentials"));
 
   createToken(validUser, res);
+  const { password: pass, ...restInfo } = validUser._doc;
+  res.status(200).json(restInfo);
 };
 
 export const google = async (req, res, next) => {
@@ -56,6 +54,8 @@ export const google = async (req, res, next) => {
     // user exists
     // sign in logic without password so just creating a fresh token for the user
     createToken(user, res);
+    const { password: pass, ...restInfo } = user._doc;
+    res.status(200).json(restInfo);
   } else {
     // user does not exist
     // create a new user
@@ -67,5 +67,14 @@ export const google = async (req, res, next) => {
       Math.random().toString(36).slice(-8);
     req.body.password = dummyPassword;
     await signup(req, res, next);
+  }
+};
+
+export const signOut = async (req, res, next) => {
+  try {
+    res.clearCookie("access_token");
+    res.status(200).json("user has been signed out");
+  } catch (error) {
+    next(error);
   }
 };

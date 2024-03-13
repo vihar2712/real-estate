@@ -55,7 +55,6 @@ const Profile = () => {
   };
 
   const handleChange = (e) => {
-    console.log(e.target.id, e.target.value);
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
@@ -63,6 +62,7 @@ const Profile = () => {
     e.preventDefault();
     try {
       dispatch(signInStart());
+
       const res = await fetch("/api/user/update/" + currentUser._id, {
         method: "POST",
         headers: {
@@ -86,6 +86,36 @@ const Profile = () => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      dispatch(signInStart());
+      const res = await fetch("api/user/delete/" + currentUser._id, {
+        method: "DELETE",
+      });
+      const data = res.json();
+      if (data.success === false) {
+        dispatch(signInFailure(data.message));
+        return;
+      }
+      dispatch(signInSuccess(null));
+    } catch (error) {
+      dispatch(signInFailure(error.message));
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      const res = await fetch("/api/auth/signout");
+      const data = res.json();
+      if (data.success === false) {
+        dispatch(signInFailure(error.message));
+        return;
+      }
+      dispatch(signInSuccess(null));
+    } catch (error) {
+      dispatch(signInFailure(error.message));
+    }
+  };
   return (
     <div className="max-w-lg mx-auto">
       <h1 className="text-3xl font-semibold text-center mt-4">Profile</h1>
@@ -127,6 +157,7 @@ const Profile = () => {
           className="p-3 rounded-lg"
           defaultValue={currentUser.username}
           onChange={(e) => handleChange(e)}
+          required
         />
         <input
           type="email"
@@ -135,6 +166,7 @@ const Profile = () => {
           className="p-3 rounded-lg"
           defaultValue={currentUser.email}
           onChange={(e) => handleChange(e)}
+          required
         />
         <input
           id="password"
@@ -152,8 +184,12 @@ const Profile = () => {
         </button>
       </form>
       <div className="flex justify-between text-red-700 mt-5">
-        <span className="cursor-pointer">Delete account</span>
-        <span className="cursor-pointer">Sign Out</span>
+        <span className="cursor-pointer" onClick={handleDelete}>
+          Delete account
+        </span>
+        <span className="cursor-pointer" onClick={handleSignOut}>
+          Sign Out
+        </span>
       </div>
       {error && <p className="text-red-700 mt-5 text-lg">{error}</p>}
       {updateSuccess && (
