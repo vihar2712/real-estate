@@ -8,10 +8,13 @@ import {
 } from "firebase/storage";
 import { app } from "../../firebase";
 import {
+  setLoading,
   signInFailure,
   signInStart,
   signInSuccess,
 } from "../redux/user/userSlice";
+import Loading from "./Loading";
+import { Link } from "react-router-dom";
 const Profile = () => {
   const dispatch = useDispatch();
   const fileRef = useRef(null);
@@ -36,16 +39,19 @@ const Profile = () => {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
+        dispatch(setLoading(true));
         setFileUploadError(false);
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setFilePerc(Math.round(progress));
       },
       (error) => {
+        dispatch(setLoading(false));
         setFileUploadError(true);
         console.log(error.code, error.message);
       },
       () => {
+        dispatch(setLoading(false));
         setFileUploadError(false);
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setFormData({ ...formData, avatar: downloadURL });
@@ -130,7 +136,7 @@ const Profile = () => {
         <img
           src={formData.avatar || currentUser.avatar}
           alt="profile"
-          className="w-24 h-24 rounded-full self-center mt-2 cursor-pointer"
+          className="w-24 h-24 rounded-full self-center mt-2 cursor-pointer border-2 border-slate-700"
           onClick={() => {
             fileRef.current.click();
           }}
@@ -177,11 +183,17 @@ const Profile = () => {
         />
         <button
           disabled={loading}
-          className="bg-slate-700 text-white p-3 rounded-lg"
+          className="bg-slate-700 text-white p-3 rounded-lg disabled:bg-slate-500 uppercase hover:opacity-95"
           onClick={(e) => handleSubmit(e)}
         >
           {loading ? "Loading" : "Update"}
         </button>
+        <Link
+          to="/create-listing"
+          className="bg-green-700 text-white p-3 rounded-lg text-center uppercase hover:opacity-95"
+        >
+          Create Listing
+        </Link>
       </form>
       <div className="flex justify-between text-red-700 mt-5">
         <span className="cursor-pointer" onClick={handleDelete}>
@@ -197,6 +209,7 @@ const Profile = () => {
           Successfully updated your profile!
         </p>
       )}
+      {loading && <Loading />}
     </div>
   );
 };

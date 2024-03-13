@@ -36,7 +36,18 @@ export const updateUser = async (req, res, next) => {
     const { password, ...restInfo } = updatedUser._doc;
     res.status(200).json(restInfo);
   } catch (error) {
-    next(error);
+    if (error.keyValue.username)
+      return next(
+        errorHandler(
+          400,
+          req.body.username + " already exists. Please try again."
+        )
+      );
+    else if (error.keyValue.email)
+      return next(
+        errorHandler(400, req.body.email + " already exists. Please try again.")
+      );
+    else next(error);
   }
 };
 

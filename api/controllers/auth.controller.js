@@ -4,7 +4,7 @@ import { errorHandler } from "../utils/error.js";
 import jwt from "jsonwebtoken";
 
 const createToken = (validUser, res) => {
-  const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET_KEY);
+  const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET_KEY); // creates a new token from (the _id of user + secret key)
   res.cookie("access_token", token, { httpOnly: true }); //maxAge is a convenience option that sets expires relative to the current time in milliseconds.
 };
 
@@ -66,7 +66,7 @@ export const google = async (req, res, next) => {
       Math.random().toString(36).slice(-8) +
       Math.random().toString(36).slice(-8);
     req.body.password = dummyPassword;
-    await signup(req, res, next);
+    await signUp(req, res, next);
   }
 };
 
