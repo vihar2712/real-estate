@@ -8,7 +8,6 @@ import {
 } from "firebase/storage";
 import { app } from "../../firebase";
 import {
-  setLoading,
   signInFailure,
   signInStart,
   signInSuccess,
@@ -21,9 +20,11 @@ const Profile = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
-  const { currentUser, loading, error } = useSelector((store) => store.user);
+  const [updateLoading, setUpdateLoading] = useState(false);
+  const { currentUser, error } = useSelector((store) => store.user);
   const [formData, setFormData] = useState(currentUser);
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  console.log(formData);
 
   useEffect(() => {
     if (selectedFile) {
@@ -39,19 +40,19 @@ const Profile = () => {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        dispatch(setLoading(true));
+        setUpdateLoading(true);
         setFileUploadError(false);
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setFilePerc(Math.round(progress));
       },
       (error) => {
-        dispatch(setLoading(false));
+        setUpdateLoading(false);
         setFileUploadError(true);
         console.log(error.code, error.message);
       },
       () => {
-        dispatch(setLoading(false));
+        setUpdateLoading(false);
         setFileUploadError(false);
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setFormData({ ...formData, avatar: downloadURL });
@@ -182,11 +183,11 @@ const Profile = () => {
           onChange={(e) => handleChange(e)}
         />
         <button
-          disabled={loading}
+          disabled={updateLoading}
           className="bg-slate-700 text-white p-3 rounded-lg disabled:bg-slate-500 uppercase hover:opacity-95"
           onClick={(e) => handleSubmit(e)}
         >
-          {loading ? "Loading" : "Update"}
+          {updateLoading ? "Loading" : "Update"}
         </button>
         <Link
           to="/create-listing"
@@ -209,7 +210,7 @@ const Profile = () => {
           Successfully updated your profile!
         </p>
       )}
-      {loading && <Loading />}
+      {updateLoading && <Loading />}
     </div>
   );
 };
