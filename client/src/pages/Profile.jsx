@@ -24,7 +24,6 @@ const Profile = () => {
   const { currentUser, error } = useSelector((store) => store.user);
   const [formData, setFormData] = useState(currentUser);
   const [updateSuccess, setUpdateSuccess] = useState(false);
-  console.log(formData);
 
   useEffect(() => {
     if (selectedFile) {
@@ -68,6 +67,7 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setFilePerc(0);
       dispatch(signInStart());
 
       const res = await fetch("/api/user/update/" + currentUser._id, {
@@ -153,7 +153,7 @@ const Profile = () => {
         ) : (
           filePerc === 100 && (
             <h1 className="text-green-700 text-center">
-              Uploaded Successfully.
+              Uploaded Successfully. Click on update to save changes..
             </h1>
           )
         )}
