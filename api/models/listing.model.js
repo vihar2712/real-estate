@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const listingSchema = new mongoose.Schema({
-  name: {
+  title: {
     type: String,
     required: true,
   },
@@ -46,8 +46,13 @@ const listingSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
-  images: {
+  imageUrls: {
     type: Array,
+    required: true,
+  },
+  userRef: {
+    // to know which user has listed their property
+    type: String,
     required: true,
   },
 });
