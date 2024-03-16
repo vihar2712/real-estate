@@ -133,7 +133,7 @@ const CreateListing = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(formData);
+      // console.log(formData);
       if (formData.imageUrls.length < 1)
         return setError("You need to upload atleast one image");
 
@@ -158,12 +158,11 @@ const CreateListing = () => {
         return;
       }
       setSuccessMsg("successfully listed.. Redirecting to your listing...");
-      setLoading(false);
       setTimeout(() => {
-        navigate(`/user/${data.userRef}/listing/${data._id}`);
+        navigate(`/listing/${data._id}`);
       }, 2000);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setError(error.message);
     }
   };
