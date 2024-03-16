@@ -33,7 +33,7 @@ export default {
         },
         reverseY: {
           "0%": {
-            transform: "translateY(0%)",
+            transform: "translateY(10%)",
           },
 
           "100%": {

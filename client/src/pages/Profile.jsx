@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getDownloadURL,
@@ -14,6 +14,7 @@ import {
 } from "../redux/user/userSlice";
 import Loading from "../components/Loading";
 import { Link, useNavigate } from "react-router-dom";
+import Warning from "../components/Warning";
 const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -28,6 +29,12 @@ const Profile = () => {
   const [showListing, setShowListing] = useState(false);
   const [listingError, setListingError] = useState(false);
   const [userListings, setUserListings] = useState([]);
+  const [showWarning, setShowWarning] = useState({
+    showSign: false,
+    warningSign: null,
+  });
+  const [warningResult, setWarningResult] = useState(false);
+  const [listingId, setListingId] = useState(null);
 
   useEffect(() => {
     if (selectedFile) {
@@ -97,7 +104,7 @@ const Profile = () => {
     }
   };
 
-  const handleDelete = async () => {
+  const handleDeleteAccount = async () => {
     try {
       dispatch(signInStart());
       const res = await fetch("api/user/delete/" + currentUser._id, {
@@ -164,12 +171,17 @@ const Profile = () => {
       );
       if (filteredListings.length === 0) setShowListing(false);
       setUserListings(filteredListings);
+      setWarningResult(false);
     } catch (error) {
-      console.log(error);
       setListingError(error.message);
     }
   };
 
+  if (warningResult === true && showWarning.warningSign === "delete-listing")
+    handleDeleteListing(listingId);
+
+  if (warningResult === true && showWarning.warningSign === "delete-account")
+    handleDeleteAccount();
   return (
     <div className={showListing ? "flex justify-evenly" : ""}>
       <div
@@ -249,7 +261,15 @@ const Profile = () => {
             </Link>
           </form>
           <div className="flex justify-between text-red-700 mt-5">
-            <span className="cursor-pointer" onClick={handleDelete}>
+            <span
+              className="cursor-pointer"
+              onClick={() => {
+                setShowWarning({
+                  showSign: true,
+                  warningSign: "delete-account",
+                });
+              }}
+            >
               Delete account
             </span>
             <span className="cursor-pointer" onClick={handleSignOut}>
@@ -303,7 +323,13 @@ const Profile = () => {
                 <div className="flex flex-col justify-center">
                   <button
                     className="uppercase text-red-700 hover:underline"
-                    onClick={() => handleDeleteListing(listing._id)}
+                    onClick={() => {
+                      setShowWarning({
+                        showSign: true,
+                        warningSign: "delete-listing",
+                      });
+                      setListingId(listing._id);
+                    }}
                   >
                     Delete
                   </button>
@@ -315,6 +341,30 @@ const Profile = () => {
             ))}
           </div>
         </div>
+      )}
+      {showWarning.showSign && showWarning.warningSign === "delete-listing" && (
+        <Warning
+          text={"this listing"}
+          deleteAns={(ans) => setWarningResult(ans)}
+          closeWarningSign={() =>
+            setShowWarning({
+              showSign: false,
+              warningSign: "delete-listing",
+            })
+          }
+        />
+      )}
+      {showWarning.showSign && showWarning.warningSign === "delete-account" && (
+        <Warning
+          text={"your account"}
+          deleteAns={(ans) => setWarningResult(ans)}
+          closeWarningSign={() =>
+            setShowWarning({
+              showSign: false,
+              warningSign: "delete-account",
+            })
+          }
+        />
       )}
     </div>
   );
