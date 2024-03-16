@@ -9,6 +9,7 @@ import PrivateProfile from "./pages/PrivateProfile";
 import LoggedIn from "./pages/LoggedIn";
 import CreateListing from "./pages/CreateListing";
 import UpdateListing from "./pages/UpdateListing";
+import Listing from "./pages/Listing";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             element={<UpdateListing />}
           />
         </Route>
+        <Route path="/listing/:listingId" element={<Listing />} />
         <Route element={<LoggedIn />}>
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />

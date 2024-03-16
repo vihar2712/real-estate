@@ -13,12 +13,9 @@ export const createListing = async (req, res, next) => {
 
 export const deleteListing = async (req, res, next) => {
   try {
-    try {
-      const listing = await Listing.findById(req.params.id);
-    } catch (error) {
-      next(errorHandler(404, "No such listing found"));
-    }
     const listing = await Listing.findById(req.params.id);
+    if (!listing) return next(errorHandler(404, "No such listing found"));
+
     if (req.user.id !== listing.userRef)
       return next(errorHandler(401, "You can delete only your own listings"));
 
