@@ -7,7 +7,7 @@ const Header = () => {
   const { currentUser } = useSelector((store) => store.user);
 
   return (
-    <header className="p-3 bg-slate-200 shadow-md">
+    <header className="p-3 bg-slate-200 shadow-md relative z-50">
       <div className="flex justify-between items-center max-w-6xl mx-auto">
         <Link to="/">
           <h1>

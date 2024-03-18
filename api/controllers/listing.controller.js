@@ -51,7 +51,9 @@ export const getListing = async (req, res, next) => {
     if (!listing) return next(errorHandler(404, "No such listing found"));
 
     res.status(200).json(listing);
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const getListings = async (req, res, next) => {
@@ -80,7 +82,7 @@ export const getListings = async (req, res, next) => {
 
     const sort = req.query.sort || "createdAt";
 
-    const order = req.query.order || "desc"; 
+    const order = req.query.order || "desc";
 
     const listings = await Listing.find({
       title: { $regex: searchTerm, $options: "i" },
