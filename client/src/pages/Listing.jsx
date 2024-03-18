@@ -12,10 +12,15 @@ import {
   FaMapMarkerAlt,
   FaParking,
 } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import Contact from "../components/Contact";
 
 const Listing = () => {
-  SwiperCore.use(Navigation);
+  const { currentUser } = useSelector((store) => store.user);
   const [userListing, setUserListing] = useState(null);
+  const [contact, setContact] = useState(false);
+  SwiperCore.use(Navigation);
+
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetch("/api/listing/get/" + params.listingId);
@@ -45,8 +50,8 @@ const Listing = () => {
               </SwiperSlide>
             ))}
           </Swiper>
-          <div className="w-6/12 mx-auto flex flex-col gap-2">
-            <h1 className="text-lg font-semibold my-6">
+          <div className="w-6/12 mx-auto flex flex-col gap-2 p-4">
+            <h1 className="text-lg font-semibold my-3">
               {userListing.title}
               <span>
                 {" "}
@@ -83,26 +88,37 @@ const Listing = () => {
               <span className="font-semibold text-black">Description - </span>
               {userListing.description}
             </p>
-            <div className="flex gap-6 flex-wrap">
-              <span className="flex gap-1 items-center">
+            <ul className="flex gap-6 flex-wrap">
+              <li className="flex gap-1 items-center">
                 <FaBed className="text-orange-700" />
                 {userListing.bedrooms}
                 {userListing.bedrooms > 1 ? " beds" : "bed"}
-              </span>
-              <span className="flex gap-1 items-center">
+              </li>
+              <li className="flex gap-1 items-center">
                 <FaBath className="text-orange-700" />
                 {userListing.bathrooms}
                 {userListing.bathrooms > 1 ? " baths" : " bath"}
-              </span>
-              <span className="flex gap-1 items-center">
+              </li>
+              <li className="flex gap-1 items-center">
                 <FaParking className="text-orange-700" />
                 {userListing.parking ? "Parking Spot" : "No parking"}
-              </span>
-              <span className="flex gap-1 items-center">
+              </li>
+              <li className="flex gap-1 items-center">
                 <FaChair className="text-orange-700" />
                 {userListing.furnished ? "Furnished" : "Not Furnished"}
-              </span>
-            </div>
+              </li>
+            </ul>
+            {currentUser &&
+              currentUser.id != userListing.userRef &&
+              !contact && (
+                <button
+                  className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95"
+                  onClick={() => setContact(true)}
+                >
+                  Contact landlord
+                </button>
+              )}
+            {currentUser && contact && <Contact listing={userListing} />}
           </div>
         </div>
       ) : (

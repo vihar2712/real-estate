@@ -78,3 +78,14 @@ export const showListings = async (req, res, next) => {
     next(errorHandler(401, "You can only get your own listings"));
   }
 };
+
+export const getUser = async (req, res, next) => {
+  // user of id will be passed as parameter
+  if (!req.params.id) return next(errorHandler(404, "User not found"));
+  try {
+    const user = await User.findById(req.params.id);
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
