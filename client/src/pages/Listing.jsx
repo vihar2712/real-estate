@@ -109,7 +109,7 @@ const Listing = () => {
               </li>
             </ul>
             {currentUser &&
-              currentUser.id != userListing.userRef &&
+              currentUser._id !== userListing.userRef &&
               !contact && (
                 <button
                   className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95"
@@ -118,7 +118,12 @@ const Listing = () => {
                   Contact landlord
                 </button>
               )}
-            {currentUser && contact && <Contact listing={userListing} />}
+            {currentUser && contact && (
+              <Contact
+                listing={userListing}
+                visibleFn={() => setContact(false)}
+              />
+            )}
           </div>
         </div>
       ) : (

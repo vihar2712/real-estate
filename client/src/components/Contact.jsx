@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const Contact = ({ listing }) => {
+const Contact = ({ listing, visibleFn }) => {
   const [landlord, setLandlord] = useState(null);
   const [message, setMessage] = useState("");
-  console.log(landlord);
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -32,13 +31,22 @@ const Contact = ({ listing }) => {
           >
             {message}
           </textarea>
-          <Link
-            to={`mailto:${landlord.email}?subject=Enquiry for ${listing.title}&body=${message}`}
-            className="text-center p-3 bg-slate-700 text-white w-full rounded-lg"
-            target="_blank"
-          >
-            Send message
-          </Link>
+          <div className="grid grid-cols-2 gap-2">
+            <Link
+              to={`mailto:${landlord.email}?subject=Enquiry for ${listing.title}&body=${message}`}
+              className="text-center p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 col-span-1"
+              target="_blank"
+              aria-required
+            >
+              Send message
+            </Link>
+            <button
+              className="bg-red-700 text-white p-3 rounded-lg uppercase hover:opacity-95 col-span-1"
+              onClick={() => visibleFn()}
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       )}
     </div>
