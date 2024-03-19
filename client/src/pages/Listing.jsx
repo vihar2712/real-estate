@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Loading from "../components/Loading";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore from "swiper";
@@ -20,7 +20,7 @@ import Error from "./Error";
 const Listing = () => {
   const { currentUser } = useSelector((store) => store.user);
   const [userListing, setUserListing] = useState(null);
-  console.log(userListing);
+  // console.log(userListing);
   const [contact, setContact] = useState(false);
   SwiperCore.use(Navigation);
   SwiperCore.use(Autoplay);
@@ -60,17 +60,34 @@ const Listing = () => {
                 </SwiperSlide>
               ))}
             </Swiper>
-            <div className="w-6/12 mx-auto flex flex-col gap-2 p-4">
+            <div className="w-6/12 mx-auto flex flex-col gap-2 p-4 relative">
+              {userListing.userRef === currentUser._id && (
+                <div className="absolute z-20 -top-10 -left-32 h-32 w-32 font-semibold flex flex-col items-center justify-center bg-orange-700 rounded-full p-6">
+                  <h1 className="text-center text-white">Posted by YOU</h1>
+                  <Link
+                    to={"/update-listing/" + userListing._id}
+                    className="text-gray-300 hover:underline"
+                  >
+                    Update!
+                  </Link>
+                </div>
+              )}
               <h1 className="text-lg font-semibold my-3">
                 {userListing.title}
                 <span>
                   {" "}
-                  - ${" "}
+                  - ₹{" "}
                   {userListing.discountPrice > 0
-                    ? userListing.discountPrice.toLocaleString("en-US")
-                    : userListing.regularPrice.toLocaleString("en-US")}
+                    ? userListing.discountPrice.toLocaleString("en-IN")
+                    : userListing.regularPrice.toLocaleString("en-IN")}
                   {userListing.type === "sell" ? "" : "/ month"}
                 </span>
+                {userListing.discountPrice > 0 && (
+                  <span className="mx-2 text-sm line-through text-orange-700 ">
+                    (Original Price: ₹
+                    {userListing.regularPrice.toLocaleString("en-IN")})
+                  </span>
+                )}
               </h1>
               <span className="flex items-center gap-2">
                 <FaMapMarkerAlt className="text-orange-700" />
@@ -83,10 +100,10 @@ const Listing = () => {
                 {+userListing.regularPrice - +userListing.discountPrice > 0 &&
                   userListing.discountPrice > 0 && (
                     <span className="bg-green-900 text-white py-2 px-10 rounded-md">
-                      $
+                      ₹
                       {(
                         +userListing.regularPrice - +userListing.discountPrice
-                      ).toLocaleString("en-US")}{" "}
+                      ).toLocaleString("en-IN")}{" "}
                       discount
                     </span>
                   )}

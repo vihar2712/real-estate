@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
-import { FaMapMarkerAlt } from "react-icons/fa";
+import { FaCaretDown, FaMapMarkerAlt } from "react-icons/fa";
 
 const Search = () => {
   const navigate = useNavigate();
   const [listingResults, setListingResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showMore, setShowMore] = useState(false);
   const [formData, setFormData] = useState({
     searchTerm: "",
     type: "all",
@@ -16,8 +17,6 @@ const Search = () => {
     sort: "createdAt",
     order: "desc",
   });
-
-  console.log(formData);
 
   const handleChange = (e) => {
     if (e.target.id === "searchTerm") {
@@ -49,6 +48,21 @@ const Search = () => {
       setFormData({ ...formData, sort, order });
     }
   };
+
+  const onshowMoreClick = async () => {
+    const numberOfListings = listingResults.length;
+    const startIndex = numberOfListings;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+    const searchQuery = urlParams.toString();
+    const res = await fetch("/api/listing/get?" + searchQuery);
+    const data = await res.json();
+    if (data.length < 9) {
+      setShowMore(false);
+    }
+    setListingResults([...listingResults, ...data]);
+  };
+
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const searchTermFromUrl = urlParams.get("searchTerm");
@@ -83,6 +97,11 @@ const Search = () => {
       const res = await fetch("/api/listing/get?" + searchQuery);
       const data = await res.json();
       setLoading(false);
+      if (data.length > 8) {
+        setShowMore(true);
+      } else {
+        setShowMore(false);
+      }
       setListingResults(data);
     };
     fetchData();
@@ -216,6 +235,7 @@ const Search = () => {
                 type,
                 imageUrls,
                 regularPrice,
+                discountPrice,
                 address,
                 description,
                 bedrooms,
@@ -242,10 +262,17 @@ const Search = () => {
                     <p className="text-gray-600 text-sm line-clamp-2">
                       {description}
                     </p>
-                    <p className="text-slate-500 font-semibold">
-                      $ {regularPrice.toLocaleString("en-US")}
-                      {type === "sell" ? "" : " / month"}
-                    </p>
+                    <div className="flex gap-2">
+                      <p className="text-slate-500 font-semibold">
+                        ₹ {regularPrice.toLocaleString("en-IN")}
+                        {type === "sell" ? "" : " / month"}
+                      </p>
+                      {discountPrice > 0 && (
+                        <span className="text-orange-700 font-semibold">
+                          (offer available)
+                        </span>
+                      )}
+                    </div>
                     <div className="flex gap-3 text-slate-700 font-bold text-xs">
                       <p>
                         {bedrooms}
@@ -264,6 +291,12 @@ const Search = () => {
             <h1>No results found!!</h1>
           )}
         </div>
+        {showMore && (
+          <div className="flex gap-1 items-center text-orange-700 hover:underline my-4 text-lg">
+            <button onClick={() => onshowMoreClick()}>Show more</button>
+            <FaCaretDown />
+          </div>
+        )}
       </div>
     </div>
   );

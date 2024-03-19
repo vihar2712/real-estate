@@ -280,14 +280,14 @@ const CreateListing = () => {
               className="p-3 rounded-lg w-36"
               id="regularPrice"
               min="50"
-              max="1000000"
+              max="1000000000"
               value={formData.regularPrice}
               onChange={handleChange}
             />
             <div className="flex flex-col">
               <span>Regular Price</span>
               {formData.type === "rent" && (
-                <span className="text-xs text-center">($ /Month)</span>
+                <span className="text-xs text-center">(₹ /Month)</span>
               )}
             </div>
           </div>
@@ -298,14 +298,14 @@ const CreateListing = () => {
                 className="p-3 rounded-lg w-36"
                 id="discountPrice"
                 min="0"
-                max="1000000"
+                max="1000000000"
                 value={formData.discountPrice}
                 onChange={handleChange}
               />
               <div className="flex flex-col">
                 <span>Discounted Price</span>
                 {formData.type === "rent" && (
-                  <span className="text-xs text-center">($ /Month)</span>
+                  <span className="text-xs text-center">(₹ /Month)</span>
                 )}
               </div>
             </div>
