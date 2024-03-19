@@ -3,7 +3,8 @@ import { useParams } from "react-router-dom";
 import Loading from "../components/Loading";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore from "swiper";
-import { Navigation } from "swiper/modules";
+import { Navigation, Autoplay } from "swiper/modules";
+import "swiper/css/autoplay";
 import "swiper/css/bundle";
 import {
   FaBath,
@@ -19,8 +20,10 @@ import Error from "./Error";
 const Listing = () => {
   const { currentUser } = useSelector((store) => store.user);
   const [userListing, setUserListing] = useState(null);
+  console.log(userListing);
   const [contact, setContact] = useState(false);
   SwiperCore.use(Navigation);
+  SwiperCore.use(Autoplay);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +47,7 @@ const Listing = () => {
       {userListing ? (
         userListing !== "incorrect" ? (
           <div>
-            <Swiper navigation>
+            <Swiper navigation autoplay>
               {userListing.imageUrls.map((url) => (
                 <SwiperSlide key={url}>
                   <div
@@ -64,13 +67,9 @@ const Listing = () => {
                   {" "}
                   - ${" "}
                   {userListing.discountPrice > 0
-                    ? userListing.discountPrice
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                    : userListing.regularPrice
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                  {userListing.type === "sale" ? "" : "/ month"}
+                    ? userListing.discountPrice.toLocaleString("en-US")
+                    : userListing.regularPrice.toLocaleString("en-US")}
+                  {userListing.type === "sell" ? "" : "/ month"}
                 </span>
               </h1>
               <span className="flex items-center gap-2">
@@ -79,17 +78,18 @@ const Listing = () => {
               </span>
               <div className="flex gap-6">
                 <span className="bg-orange-900 text-white py-2 px-10 rounded-md">
-                  For {userListing.type}
+                  For {userListing.type === "rent" ? "Rent" : "Sale"}
                 </span>
-                {userListing.discountPrice > 0 && (
-                  <span className="bg-green-900 text-white py-2 px-10 rounded-md">
-                    $
-                    {(+userListing.regularPrice - +userListing.discountPrice)
-                      .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
-                    discount
-                  </span>
-                )}
+                {+userListing.regularPrice - +userListing.discountPrice > 0 &&
+                  userListing.discountPrice > 0 && (
+                    <span className="bg-green-900 text-white py-2 px-10 rounded-md">
+                      $
+                      {(
+                        +userListing.regularPrice - +userListing.discountPrice
+                      ).toLocaleString("en-US")}{" "}
+                      discount
+                    </span>
+                  )}
               </div>
               <p className="text-slate-700">
                 <span className="font-semibold text-black">Description - </span>

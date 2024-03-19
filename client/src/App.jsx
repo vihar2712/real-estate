@@ -10,6 +10,7 @@ import LoggedIn from "./pages/LoggedIn";
 import CreateListing from "./pages/CreateListing";
 import UpdateListing from "./pages/UpdateListing";
 import Listing from "./pages/Listing";
+import Search from "./pages/Search";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             element={<UpdateListing />}
           />
         </Route>
+        <Route path="/search" element={<Search />} />
         <Route path="/listing/:listingId" element={<Listing />} />
         <Route element={<LoggedIn />}>
           <Route path="/sign-in" element={<SignIn />} />
