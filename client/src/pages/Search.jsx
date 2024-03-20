@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
 import { FaCaretDown, FaMapMarkerAlt } from "react-icons/fa";
+import ListingCard from "./ListingCard";
 
 const Search = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const Search = () => {
     if (
       e.target.id === "all" ||
       e.target.id === "rent" ||
-      e.target.id === "sale"
+      e.target.id === "sell"
     ) {
       setFormData({ ...formData, type: e.target.id });
     }
@@ -163,9 +164,9 @@ const Search = () => {
             <input
               type="checkbox"
               className="w-5 h-5"
-              id="sale"
+              id="sell"
               onChange={handleChange}
-              checked={formData.type === "sale"}
+              checked={formData.type === "sell"}
             />
             <label>Sale</label>
           </div>
@@ -228,65 +229,11 @@ const Search = () => {
         <div className="flex flex-wrap gap-7 mt-10 rounded-lg">
           {loading && <Loading />}
           {listingResults.length > 0 ? (
-            listingResults.map((listing) => {
-              const {
-                _id,
-                title,
-                type,
-                imageUrls,
-                regularPrice,
-                discountPrice,
-                address,
-                description,
-                bedrooms,
-                bathrooms,
-              } = listing;
-              return (
-                <Link
-                  to={"/listing/" + listing._id}
-                  key={_id}
-                  className=" bg-white flex flex-col gap-4 shadow-md hover:shadow-lg rounded-md overflow-hidden transition-shadow w-full sm:w-[330px] border"
-                >
-                  <img
-                    src={imageUrls[0]}
-                    className="h-[320px] sm:h-[220px] w-full object-cover hover:scale-105 transition-scale duration-300"
-                  />
-                  <div className="p-3 flex flex-col gap-2">
-                    <h1 className="text-slate-700 font-semibold truncate text-lg">
-                      {title}
-                    </h1>
-                    <div className="flex gap-1 items-center">
-                      <FaMapMarkerAlt className="text-orange-700" />
-                      <p className="truncate text-xs">{address}</p>
-                    </div>
-                    <p className="text-gray-600 text-sm line-clamp-2">
-                      {description}
-                    </p>
-                    <div className="flex gap-2">
-                      <p className="text-slate-500 font-semibold">
-                        ₹ {regularPrice.toLocaleString("en-IN")}
-                        {type === "sell" ? "" : " / month"}
-                      </p>
-                      {discountPrice > 0 && (
-                        <span className="text-orange-700 font-semibold">
-                          (offer available)
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex gap-3 text-slate-700 font-bold text-xs">
-                      <p>
-                        {bedrooms}
-                        {bedrooms > 1 ? " beds" : " bed"}
-                      </p>
-                      <p>
-                        {bathrooms}
-                        {bathrooms > 1 ? " baths" : " bed"}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })
+            listingResults.map((listing) => (
+              <Link key={listing._id} to={"/listing/" + listing._id}>
+                <ListingCard listing={listing} />
+              </Link>
+            ))
           ) : (
             <h1>No results found!!</h1>
           )}
