@@ -5,6 +5,7 @@ import userRoute from "./routes/user.route.js";
 import authRoute from "./routes/auth.route.js";
 import listingRoute from "./routes/listing.route.js";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 dotenv.config();
 
@@ -16,6 +17,8 @@ mongoose
   .catch((err) => {
     console.log("error connecting to database", err);
   });
+
+const __dirname = path.resolve();
 
 const app = express();
 app.use(express.json()); // by default we are not allowed to send any JSON data to the server. this line helps with that
@@ -29,6 +32,12 @@ app.listen(3000, () => {
 app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/listing", listingRoute);
+
+app.use(express.static(path.join(__dirname, "/client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
