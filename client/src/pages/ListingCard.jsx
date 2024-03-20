@@ -13,7 +13,10 @@ const ListingCard = ({ listing }) => {
     bathrooms,
   } = listing;
   return (
-    <div className="relative bg-white flex flex-col gap-4 shadow-md hover:shadow-lg rounded-md overflow-hidden transition-shadow w-full sm:w-[330px] border">
+    <div
+      className="relative bg-white flex flex-col gap-2 sm:gap-4 shadow-md hover:shadow-lg rounded-md 
+    overflow-hidden transition-shadow w-full sm:w-[430px] md:w-[330px] border"
+    >
       <div className="absolute top-0 left-0 bg-orange-700 p-1 rounded-r-lg rounded-tr-none z-20 ">
         {discountPrice > 0 && (
           <span className="text-white font-semibold">offer available</span>
@@ -23,7 +26,7 @@ const ListingCard = ({ listing }) => {
         src={imageUrls[0]}
         className="h-[320px] sm:h-[220px] w-full object-cover hover:scale-105 transition-scale duration-300"
       />
-      <div className="p-3 flex flex-col gap-2 h-[175px]">
+      <div className="px-3 flex flex-col gap-2 h-[175px]">
         <h1 className="text-slate-700 font-semibold truncate text-lg">
           {title}
         </h1>

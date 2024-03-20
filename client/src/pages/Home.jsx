@@ -62,8 +62,8 @@ const Home = () => {
   }, []);
   return (
     <div>
-      <div className="px-48 py-24 flex flex-col gap-5">
-        <h1 className="text-6xl text-slate-700 font-bold">
+      <div className=" py-16 w-full sm:w-6/12 md:w-9/12 flex flex-col gap-5 mx-auto text-center sm:text-left">
+        <h1 className="text-3xl md:text-5xl lg:text-6xl text-slate-700 font-bold">
           Find your next <span className="text-slate-500">perfect</span>
           <br /> place with ease
         </h1>

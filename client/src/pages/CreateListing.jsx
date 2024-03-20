@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import { app } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { FaTrash } from "react-icons/fa";
 
 const CreateListing = () => {
   const navigate = useNavigate();
@@ -170,7 +171,7 @@ const CreateListing = () => {
   return (
     <div className="max-w-4xl mx-auto p-3">
       <h1 className="text-3xl font-bold text-center my-7">Create a Listing</h1>
-      <form className="flex gap-3" onSubmit={handleSubmit}>
+      <form className="flex flex-col sm:flex-row gap-3" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 flex-1">
           <input
             type="text"
@@ -352,7 +353,7 @@ const CreateListing = () => {
                     className="uppercase text-red-700"
                     onClick={() => handleDeleteItem(index)}
                   >
-                    Delete
+                    <FaTrash className="text-red-700 hover:text-gray-500" />
                   </button>
                 </div>
               ))}

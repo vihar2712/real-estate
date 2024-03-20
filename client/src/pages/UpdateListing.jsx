@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import { app } from "../../firebase";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { FaTrash } from "react-icons/fa";
 
 const UpdateListing = () => {
   const params = useParams();
@@ -183,7 +184,7 @@ const UpdateListing = () => {
   return (
     <div className="max-w-4xl mx-auto p-3">
       <h1 className="text-3xl font-bold text-center my-7">Update a Listing</h1>
-      <form className="flex gap-3" onSubmit={handleSubmit}>
+      <form className="flex flex-col sm:flex-row gap-3" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 flex-1">
           <input
             type="text"
@@ -199,6 +200,7 @@ const UpdateListing = () => {
           <textarea
             placeholder="Description"
             id="description"
+            rows="4"
             className="p-3 rounded-lg"
             required
             value={formData.description}
@@ -365,7 +367,7 @@ const UpdateListing = () => {
                     className="uppercase text-red-700"
                     onClick={() => handleDeleteItem(index)}
                   >
-                    Delete
+                    <FaTrash className="text-red-700 hover:text-gray-500" />
                   </button>
                 </div>
               ))}

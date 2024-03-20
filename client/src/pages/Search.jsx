@@ -59,9 +59,7 @@ const Search = () => {
     urlParams.set("startIndex", startIndex);
     const searchQuery = urlParams.toString();
     const res = await fetch(
-      "/api/listing/get?" +
-        searchQuery +
-        (currentUser._id && "&currentUserId=" + currentUser._id)
+      "/api/listing/get?" + searchQuery + "&currentUserId=" + currentUser?._id
     );
     const data = await res.json();
     if (data.length < 9) {
@@ -102,9 +100,7 @@ const Search = () => {
       const searchQuery = urlParams.toString();
       setLoading(true);
       const res = await fetch(
-        "/api/listing/get?" +
-          searchQuery +
-          (currentUser._id && "&currentUserId=" + currentUser._id)
+        "/api/listing/get?" + searchQuery + "&currentUserId=" + currentUser?._id
       );
       const data = await res.json();
       setLoading(false);
@@ -134,7 +130,7 @@ const Search = () => {
   return (
     <div className="p-4 flex flex-col md:flex-row gap-4">
       <form
-        className="flex flex-col gap-7 text-md border-r-2 md:min-h-screen p-3"
+        className="flex flex-col gap-7 text-md sm:border-r-2 md:min-h-screen p-3"
         onSubmit={handleSubmit}
       >
         <div className="flex gap-2 items-center">
@@ -232,11 +228,11 @@ const Search = () => {
           Search
         </button>
       </form>
-      <div className="w-10/12">
-        <h1 className="text-3xl text-slate-700 border-b-2 p-2 mt-2 ">
+      <div className="sm:w-10/12 mx-auto">
+        <h1 className="text-3xl text-slate-700 border-b-2 p-2 mt-2 text-center md:text-left ">
           Listing Results:
         </h1>
-        <div className="flex flex-wrap gap-7 mt-10 rounded-lg">
+        <div className="flex flex-wrap gap-7 mt-10 rounded-lg justify-center md:justify-normal">
           {loading && <Loading />}
           {listingResults.length > 0 ? (
             listingResults.map((listing) => (

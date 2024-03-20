@@ -15,6 +15,7 @@ import {
 import Loading from "../components/Loading";
 import { Link, useNavigate } from "react-router-dom";
 import Warning from "../components/Warning";
+import { FaEdit, FaTrash } from "react-icons/fa";
 const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -183,11 +184,15 @@ const Profile = () => {
   if (warningResult === true && showWarning.warningSign === "delete-account")
     handleDeleteAccount();
   return (
-    <div className={showListing ? "flex justify-evenly" : ""}>
+    <div
+      className={showListing ? "flex flex-col sm:flex-row justify-evenly" : ""}
+    >
       <div
-        className={showListing ? "w-6/12 animate-slideX" : "animate-reverseX"}
+        className={
+          showListing ? "sm:w-6/12 sm:animate-slideX" : "sm:animate-reverseX"
+        }
       >
-        <div className="max-w-lg mx-auto">
+        <div className="max-w-lg mx-auto p-3">
           <h1 className="text-3xl font-semibold text-center mt-4">Profile</h1>
           <form className="flex flex-col gap-4">
             <input
@@ -296,7 +301,7 @@ const Profile = () => {
         </div>
       </div>
       {showListing && (
-        <div className="w-4/12 animate-slideY">
+        <div className="sm:w-6/12 md:w-4/12 sm:animate-slideY">
           <h1 className="text-center font-semibold text-2xl my-7">
             Your listings
           </h1>
@@ -304,13 +309,13 @@ const Profile = () => {
             {userListings?.map((listing) => (
               <div
                 key={listing._id}
-                className="p-3 border border-gray-200 flex justify-between gap-5"
+                className="p-3 border border-gray-200 flex justify-between md:gap-3 lg:gap-5"
               >
                 <div className="flex items-center gap-4 w-10/12">
                   <img
                     src={listing.imageUrls[0]}
                     alt="listing-image"
-                    className="w-36 h-36 rounded-md cursor-pointer"
+                    className="w-24 h-24 lg:w-36 lg:h-36 rounded-md cursor-pointer"
                     onClick={() => navigate(`/listing/${listing._id}`)}
                   />
                   <h1
@@ -320,9 +325,8 @@ const Profile = () => {
                     {listing.title}
                   </h1>
                 </div>
-                <div className="flex flex-col justify-center">
+                <div className="flex flex-col gap-3 justify-center sm:text-xs lg:text-xl">
                   <button
-                    className="uppercase text-red-700 hover:underline"
                     onClick={() => {
                       setShowWarning({
                         showSign: true,
@@ -331,11 +335,11 @@ const Profile = () => {
                       setListingId(listing._id);
                     }}
                   >
-                    Delete
+                    <FaTrash className=" text-red-700 hover:text-gray-500 -mx-1" />
                   </button>
                   <Link to={"/update-listing/" + listing._id}>
-                    <span className="uppercase text-green-700 hover:underline">
-                      Edit
+                    <span>
+                      <FaEdit className="text-green-700 hover:text-gray-500" />
                     </span>
                   </Link>
                 </div>
@@ -359,6 +363,7 @@ const Profile = () => {
       {showWarning.showSign && showWarning.warningSign === "delete-account" && (
         <Warning
           text={"your account"}
+          subtext={"All your posted listings will be deleted"}
           deleteAns={(ans) => setWarningResult(ans)}
           closeWarningSign={() =>
             setShowWarning({

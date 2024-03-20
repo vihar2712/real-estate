@@ -89,3 +89,14 @@ export const getUser = async (req, res, next) => {
     next(error);
   }
 };
+
+export const deleteUserListings = async (req, res, next) => {
+  // if user deletes account, associated listings should also be deleted
+  try {
+    await Listing.deleteMany({ userRef: req.user.id });
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+};

@@ -13,7 +13,6 @@ const Header = () => {
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set("searchTerm", searchTerm);
     const searchQuery = urlParams.toString();
-    console.log(searchQuery);
     navigate("/search?" + searchQuery);
   };
 
@@ -40,7 +39,7 @@ const Header = () => {
         >
           <input
             type="text"
-            className="bg-transparent focus:outline-none w-64"
+            className="bg-transparent focus:outline-none w-20 sm:w-64"
             placeholder="Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -50,13 +49,12 @@ const Header = () => {
           </button>
         </form>
         <ul className="flex items-center gap-4">
-          <Link to="/">
-            <li className="hover:underline ">Home</li>
-          </Link>
-          <Link to="/about">
-            {" "}
-            <li className="hover:underline ">About</li>
-          </Link>
+          <li className="hover:underline hidden sm:block">
+            <Link to="/">Home</Link>
+          </li>
+          <li className="hover:underline hidden sm:block">
+            <Link to="/about">About</Link>
+          </li>
           <Link to="/profile">
             {currentUser ? (
               <li>
