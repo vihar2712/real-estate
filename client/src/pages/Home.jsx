@@ -21,14 +21,17 @@ const Home = () => {
       {
         type: offerListings,
         text: "offers",
+        searchQuery: "offer=true",
       },
       {
         type: rentListings,
         text: "places for rent",
+        searchQuery: "type=rent",
       },
       {
         type: saleListings,
         text: "places for sale",
+        searchQuery: "type=sell",
       },
     ];
   }
@@ -98,6 +101,7 @@ const Home = () => {
             key={listing.text}
             listings={listing.type}
             text={listing.text}
+            searchQuery={listing.searchQuery}
           />
         ))}
       </div>

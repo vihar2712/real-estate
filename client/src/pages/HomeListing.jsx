@@ -2,12 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import ListingCard from "./ListingCard";
 
-const HomeListing = ({ listings, text }) => {
+const HomeListing = ({ listings, text, searchQuery }) => {
   return (
     <div className="m-2 w-9/12 mx-auto flex flex-col gap-4 mt-10">
       <h1 className="text-slate-600 font-semibold text-2xl">Recent {text}</h1>
       <Link
-        to={"/search?offer=true"}
+        to={"/search?" + searchQuery}
         className="text-blue-800 text-sm hover:underline -mt-5"
       >
         Show more {text}
