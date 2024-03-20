@@ -61,7 +61,7 @@ const Listing = () => {
               ))}
             </Swiper>
             <div className="w-6/12 mx-auto flex flex-col gap-2 p-4 relative">
-              {userListing.userRef === currentUser._id && (
+              {userListing.userRef === currentUser?._id && (
                 <div className="absolute z-20 -top-10 -left-32 h-32 w-32 font-semibold flex flex-col items-center justify-center bg-orange-700 rounded-full p-6">
                   <h1 className="text-center text-white">Posted by YOU</h1>
                   <Link
@@ -132,7 +132,7 @@ const Listing = () => {
                   {userListing.furnished ? "Furnished" : "Not Furnished"}
                 </li>
               </ul>
-              {currentUser &&
+              {currentUser ? (
                 currentUser._id !== userListing.userRef &&
                 !contact && (
                   <button
@@ -141,7 +141,15 @@ const Listing = () => {
                   >
                     Contact landlord
                   </button>
-                )}
+                )
+              ) : (
+                <Link
+                  to={"/sign-in"}
+                  className="text-lg text-red-700 hover:underline w-fit"
+                >
+                  Sign In to contact landlord
+                </Link>
+              )}
               {currentUser && contact && (
                 <Contact
                   listing={userListing}

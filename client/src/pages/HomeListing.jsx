@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import ListingCard from "./ListingCard";
 
 const HomeListing = ({ listings, text }) => {
-  console.log(listings);
   return (
     <div className="px-48 flex flex-col gap-4 mt-10">
       <h1 className="text-slate-600 font-semibold text-2xl">Recent {text}</h1>

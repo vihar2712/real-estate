@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
-import { FaCaretDown, FaMapMarkerAlt } from "react-icons/fa";
+import { FaCaretDown } from "react-icons/fa";
 import ListingCard from "./ListingCard";
+import { useSelector } from "react-redux";
 
 const Search = () => {
+  const { currentUser } = useSelector((store) => store.user);
   const navigate = useNavigate();
   const [listingResults, setListingResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -56,7 +58,11 @@ const Search = () => {
     const urlParams = new URLSearchParams(location.search);
     urlParams.set("startIndex", startIndex);
     const searchQuery = urlParams.toString();
-    const res = await fetch("/api/listing/get?" + searchQuery);
+    const res = await fetch(
+      "/api/listing/get?" +
+        searchQuery +
+        (currentUser._id && "&currentUserId=" + currentUser._id)
+    );
     const data = await res.json();
     if (data.length < 9) {
       setShowMore(false);
@@ -95,7 +101,11 @@ const Search = () => {
     const fetchData = async () => {
       const searchQuery = urlParams.toString();
       setLoading(true);
-      const res = await fetch("/api/listing/get?" + searchQuery);
+      const res = await fetch(
+        "/api/listing/get?" +
+          searchQuery +
+          (currentUser._id && "&currentUserId=" + currentUser._id)
+      );
       const data = await res.json();
       setLoading(false);
       if (data.length > 8) {

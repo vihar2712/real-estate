@@ -5,28 +5,54 @@ import SwiperCore from "swiper";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css/bundle";
 import "swiper/css/autoplay";
-import ListingCard from "./ListingCard";
+import HomeListing from "./HomeListing";
+import { useSelector } from "react-redux";
 
 const Home = () => {
+  const { currentUser } = useSelector((store) => store.user);
   SwiperCore.use([Navigation, Autoplay]);
   const [offerListings, setOfferListings] = useState(null);
   const [rentListings, setRentListings] = useState(null);
   const [saleListings, setSaleListings] = useState(null);
+
+  let allListings = null;
+  if (offerListings && rentListings && saleListings) {
+    allListings = [
+      {
+        type: offerListings,
+        text: "offers",
+      },
+      {
+        type: rentListings,
+        text: "places for rent",
+      },
+      {
+        type: saleListings,
+        text: "places for sale",
+      },
+    ];
+  }
   useEffect(() => {
     const fetchOfferListings = async () => {
-      const res = await fetch("/api/listing/get?offer=true&limit=4");
+      const res = await fetch(
+        "/api/listing/get?offer=true&limit=4&currentUserId=" + currentUser?._id
+      );
       const data = await res.json();
       setOfferListings(data);
     };
     fetchOfferListings();
 
     const fetchRentListings = async () => {
-      const res = await fetch("/api/listing/get?type=rent&limit=4");
+      const res = await fetch(
+        "/api/listing/get?type=rent&limit=4&currentUserId=" + currentUser?._id
+      );
       const data = await res.json();
       setRentListings(data);
     };
     const fetchSaleListings = async () => {
-      const res = await fetch("/api/listing/get?type=sell&limit=4");
+      const res = await fetch(
+        "/api/listing/get?type=sell&limit=4&currentUserId=" + currentUser?._id
+      );
       const data = await res.json();
       setSaleListings(data);
     };
@@ -67,60 +93,13 @@ const Home = () => {
         ))}
       </Swiper>
       <div className="py-10">
-        <div className="px-48 flex flex-col gap-4 mt-10">
-          <h1 className="text-slate-600 font-semibold text-2xl">
-            Recent offers
-          </h1>
-          <Link
-            to={"/search?offer=true"}
-            className="text-blue-800 text-sm hover:underline -mt-5"
-          >
-            Show more offers
-          </Link>
-          <div className="flex flex-wrap gap-7">
-            {offerListings?.map((listing) => (
-              <Link key={listing._id} to={"/listing/" + listing._id}>
-                <ListingCard listing={listing} />
-              </Link>
-            ))}
-          </div>
-        </div>
-        <div className="px-48 flex flex-col gap-4 mt-10">
-          <h1 className="text-slate-600 font-semibold text-2xl">
-            Recent places for rent
-          </h1>
-          <Link
-            to={"/search?type=rent"}
-            className="text-blue-800 text-sm hover:underline -mt-5"
-          >
-            Show more places for rent
-          </Link>
-          <div className="flex flex-wrap gap-7">
-            {rentListings?.map((listing) => (
-              <Link key={listing._id} to={"/listing/" + listing._id}>
-                <ListingCard listing={listing} />
-              </Link>
-            ))}
-          </div>
-        </div>
-        <div className="px-48 flex flex-col gap-4 mt-10">
-          <h1 className="text-slate-600 font-semibold text-2xl">
-            Recent places for sale
-          </h1>
-          <Link
-            to={"/search?type=sell"}
-            className="text-blue-800 text-sm hover:underline -mt-5"
-          >
-            Show more places for sale
-          </Link>
-          <div className="flex flex-wrap gap-7">
-            {saleListings?.map((listing) => (
-              <Link key={listing._id} to={"/listing/" + listing._id}>
-                <ListingCard listing={listing} />
-              </Link>
-            ))}
-          </div>
-        </div>
+        {allListings?.map((listing) => (
+          <HomeListing
+            key={listing.text}
+            listings={listing.type}
+            text={listing.text}
+          />
+        ))}
       </div>
     </div>
   );

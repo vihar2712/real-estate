@@ -59,7 +59,8 @@ export const getListing = async (req, res, next) => {
 export const getListings = async (req, res, next) => {
   try {
     const limit = parseInt(req.query.limit) || 9;
-
+    const userId = req.query.currentUserId || "xx";
+    console.log(userId);
     const startIndex = parseInt(req.query.startIndex) || 0;
 
     let offer = req.query.offer;
@@ -90,6 +91,7 @@ export const getListings = async (req, res, next) => {
       furnished,
       parking,
       type,
+      userRef: { $nin: userId },
     })
       .sort({
         [sort]: order,

@@ -25,6 +25,7 @@ const Contact = ({ listing, visibleFn }) => {
             for <span className="font-semibold">{listing.title} </span>
           </p>
           <textarea
+            className="p-1"
             rows="3"
             cols="90"
             onChange={(e) => setMessage(e.target.value)}
