@@ -27,10 +27,9 @@ app.use(cookieParser()); // used to get the access token from the cookie which i
 
 app.listen(3000, (req,res) => {
   console.log("server listening on port 3000!!");
-  res.json("server working fine")
 });
 
-app.use("/",(req,res)=> {
+app.get("/",(req,res)=> {
   res.json("hello")
 })
 
