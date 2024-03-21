@@ -30,7 +30,7 @@ const SignUp = () => {
         },
         body: JSON.stringify(formData),
       });
-      const result = await res.json(); // result is the json object sent via server response (check inside api/controller/auth.controller.js)
+      const result = await res.json(); // result is the json object sent via server response (check inside /api/controller/auth.controller.js)
       if (result.success === false) {
         dispatch(signInFailure(result.message));
         return;

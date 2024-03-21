@@ -108,7 +108,7 @@ const Profile = () => {
   const handleDeleteAccount = async () => {
     try {
       dispatch(signInStart());
-      const res = await fetch("api/user/delete/" + currentUser._id, {
+      const res = await fetch("/api/user/delete/" + currentUser._id, {
         method: "DELETE",
       });
       const data = res.json();

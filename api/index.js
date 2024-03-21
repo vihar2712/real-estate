@@ -25,20 +25,16 @@ app.use(express.json()); // by default we are not allowed to send any JSON data 
 
 app.use(cookieParser()); // used to get the access token from the cookie which is stored once user signs-in.
 
-app.use(
-  cors({
-    origin: ["https://real-estate-backend-weld.vercel.app"],
-    methods: ["POST", "GET"],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: ["https://real-estate-backend-weld.vercel.app"],
+//     methods: ["POST", "GET"],
+//     credentials: true,
+//   })
+// );
 
 app.listen(3000, (req, res) => {
   console.log("server listening on port 3000!!");
-});
-
-app.get("/", (req, res) => {
-  res.json("hello");
 });
 
 app.use("/api/user", userRoute);

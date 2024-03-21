@@ -24,7 +24,7 @@ const ListingCard = ({ listing }) => {
       )}
       <img
         src={imageUrls[0]}
-        className="h-[320px] sm:h-[220px] w-full object-cover hover:scale-105 transition-scale duration-300"
+        className="h-[320px] sm:h-[220px] w-[640px] sm:w-full object-cover hover:scale-105 transition-scale duration-300"
       />
       <div className="px-3 flex flex-col gap-2 h-[175px]">
         <h1 className="text-slate-700 font-semibold truncate text-lg">
