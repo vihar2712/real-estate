@@ -333,7 +333,7 @@ const UpdateListing = () => {
               The first image will be the cover (max 6)
             </span>
           </h1>
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <input
               type="file"
               accept="image/*"
