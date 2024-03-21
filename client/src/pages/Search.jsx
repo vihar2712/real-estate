@@ -232,7 +232,7 @@ const Search = () => {
         <h1 className="text-3xl text-slate-700 border-b-2 p-2 mt-2 text-center md:text-left ">
           Listing Results:
         </h1>
-        <div className="flex flex-wrap gap-7 mt-10 rounded-lg justify-center md:justify-normal">
+        <div className="flex flex-wrap gap-6 mt-10 rounded-lg justify-center md:justify-normal">
           {loading && <Loading />}
           {listingResults.length > 0 ? (
             listingResults.map((listing) => (
