@@ -29,6 +29,10 @@ app.listen(3000, () => {
   console.log("server listening on port 3000!!");
 });
 
+app.use("/",(req,res)=> {
+  res.json("hello")
+})
+
 app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/listing", listingRoute);
