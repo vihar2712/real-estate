@@ -121,7 +121,7 @@ const Listing = () => {
                 <li className="flex gap-1 items-center">
                   <FaBed className="text-orange-700" />
                   {userListing.bedrooms}
-                  {userListing.bedrooms > 1 ? " beds" : "bed"}
+                  {userListing.bedrooms > 1 ? " beds" : " bed"}
                 </li>
                 <li className="flex gap-1 items-center">
                   <FaBath className="text-orange-700" />
@@ -150,7 +150,7 @@ const Listing = () => {
               ) : (
                 <Link
                   to={"/sign-in"}
-                  className="text-lg bg-orange-700 text-white p-3 rounded-lg hover:opacity-95 w-fit"
+                  className="text-lg bg-blue-800 text-white p-3 rounded-lg hover:opacity-90 w-fit"
                 >
                   Sign in to contact landlord
                 </Link>

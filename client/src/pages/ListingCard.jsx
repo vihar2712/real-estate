@@ -18,7 +18,7 @@ const ListingCard = ({ listing }) => {
     overflow-hidden transition-shadow w-full sm:w-[430px] md:w-[330px] border"
     >
       {discountPrice > 0 && (
-        <div className="absolute top-0 left-0 bg-orange-700 p-1 rounded-r-lg rounded-tr-none z-20 ">
+        <div className="absolute top-0 left-0 bg-slate-700 p-1 rounded-r-lg rounded-tr-none z-20 ">
           <span className="text-white font-semibold">offer available</span>
         </div>
       )}

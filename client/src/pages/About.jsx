@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const About = () => {
   return (
-    <div className="mx-auto w-9/12 sm:w-6/12 mt-24 flex flex-col gap-2 text-slate-500">
+    <div className="mx-auto w-9/12 sm:w-6/12 mt-6 sm:mt-16 flex flex-col gap-2 text-slate-500">
       <h1 className="text-2xl sm:text-4xl font-bold text-black">
         About Vihar Estate
       </h1>
@@ -34,17 +34,23 @@ const About = () => {
       </p>
       <ul className="list-disc px-6 text-slate-700 font-semibold">
         <li>React, Redux for frontend</li>
-        <li>Node, Express for backend</li>
+        <li>Node, Express for backend and JWT for authentication</li>
         <li>MongoDB for database</li>
         <li>Google OAuth implemented</li>
         <li>Google firebase for storing user and property images</li>
       </ul>
-      <ul className="flex gap-4 items-center mb-3">
+      <ul className="flex gap-4 items-center mb-3 text-xl">
         My social links:
-        <Link to="https://www.linkedin.com/in/vihar-shah-4b63971a9/">
+        <Link
+          to="https://www.linkedin.com/in/vihar-shah-4b63971a9/"
+          className="hover:text-blue-800"
+        >
           <FaLinkedin />
         </Link>
-        <Link to="https://github.com/vihar2712/real-estate">
+        <Link
+          to="https://github.com/vihar2712/real-estate"
+          className="hover:text-violet-800"
+        >
           <FaGithub />
         </Link>
       </ul>

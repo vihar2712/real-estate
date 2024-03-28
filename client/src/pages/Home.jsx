@@ -27,8 +27,12 @@ const Home = () => {
         title: "Your listings",
         searchQuery: null,
         errorMsg: currentUser
-          ? " You don't have any listings posted. Follow the steps by filling in the necessary details required regarding your property. In few simple steps your property will go live on ViharEstate.com"
-          : "Please Sign In to see your listings",
+          ? {
+              link: "create-listing",
+              msg1: "Click here to create a new listing..",
+              msg2: " You don't have any listings posted. Follow the steps by filling in the necessary details required regarding your property. In few simple steps your property will go live on ViharEstate.com",
+            }
+          : { link: "sign-in", msg1: "Please Sign In to see your listings" },
       },
       {
         type: offerListings,

@@ -4,10 +4,16 @@
 
 body {
   background-color: #f1f5f1;
-  --swiper-theme-color: #a1a5aa;
+  --swiper-theme-color: rgb(51, 65, 85);
 }
 
 .swiper-button-prev,
 .swiper-button-next {
   font-weight: bold;
+}
+.swiper-button-prev.swiper-button-disabled,
+.swiper-button-next.swiper-button-disabled {
+  opacity: 0.35;
+  cursor: auto;
+  pointer-events: none;
 }

@@ -36,7 +36,7 @@ const HomeListing = ({ listings, title, searchQuery, errorMsg }) => {
       {searchQuery && (
         <Link
           to={"/search?" + searchQuery}
-          className="text-blue-800 text-sm hover:underline -mt-5 px-5 sm:px-16"
+          className="text-blue-800 text-sm hover:underline -mt-5 px-5 sm:px-16 w-fit"
         >
           Show more....
         </Link>
@@ -63,8 +63,18 @@ const HomeListing = ({ listings, title, searchQuery, errorMsg }) => {
           ))}
         </Swiper>
       ) : (
-        <div className="pl-5 sm:px-16">
-          <p className="sm:text-lg text-red-700 font-semibold">{errorMsg}</p>
+        <div className="pl-5 sm:px-16 flex flex-col gap-3">
+          {errorMsg.msg2 && (
+            <p className="sm:text-lg text-orange-700 font-semibold">
+              {errorMsg.msg2}
+            </p>
+          )}
+          <Link
+            to={"/" + errorMsg.link}
+            className="sm:text-lg bg-slate-700 text-white p-2 font-semibold hover:opacity-90 w-fit rounded-lg"
+          >
+            {errorMsg.msg1}
+          </Link>
         </div>
       )}
     </div>
