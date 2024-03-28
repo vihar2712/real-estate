@@ -19,6 +19,7 @@ const Search = () => {
     furnished: false,
     sort: "createdAt",
     order: "desc",
+    myListings: false,
   });
 
   const handleChange = (e) => {
@@ -37,7 +38,8 @@ const Search = () => {
     if (
       e.target.id === "offer" ||
       e.target.id === "parking" ||
-      e.target.id === "furnished"
+      e.target.id === "furnished" ||
+      e.target.id === "myListings"
     ) {
       setFormData({
         ...formData,
@@ -73,6 +75,7 @@ const Search = () => {
     const searchTermFromUrl = urlParams.get("searchTerm");
     const typeFromUrl = urlParams.get("type");
     const offerFromUrl = urlParams.get("offer");
+    const myListingsFromUrl = urlParams.get("myListings");
     const parkingFromUrl = urlParams.get("parking");
     const furnishedFromUrl = urlParams.get("furnished");
     const sortFromUrl = urlParams.get("sort");
@@ -84,12 +87,14 @@ const Search = () => {
       offerFromUrl ||
       furnishedFromUrl ||
       sortFromUrl ||
-      orderFromUrl
+      orderFromUrl ||
+      myListingsFromUrl
     ) {
       setFormData({
         searchTerm: searchTermFromUrl || "",
         type: typeFromUrl || "all",
         offer: offerFromUrl === "true" ? true : false,
+        myListings: myListingsFromUrl === "true" ? true : false,
         parking: parkingFromUrl === "true" ? true : false,
         furnished: furnishedFromUrl === "true" ? true : false,
         sort: sortFromUrl || "createdAt",
@@ -123,6 +128,7 @@ const Search = () => {
     urlParams.set("parking", formData.parking);
     urlParams.set("furnished", formData.furnished);
     urlParams.set("sort", formData.sort);
+    urlParams.set("myListings", formData.myListings);
     urlParams.set("order", formData.order);
     const searchQuery = urlParams.toString();
     navigate("/search?" + searchQuery);
@@ -185,6 +191,16 @@ const Search = () => {
               checked={formData.offer}
             />
             <label>Offer</label>
+          </div>
+          <div className="flex gap-1 items-center">
+            <input
+              type="checkbox"
+              className="w-5 h-5"
+              id="myListings"
+              onChange={handleChange}
+              checked={formData.myListings}
+            />
+            <label>My Listings</label>
           </div>
         </div>
         <div className="flex gap-3 flex-wrap">
