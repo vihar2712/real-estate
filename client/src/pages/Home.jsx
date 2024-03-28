@@ -7,6 +7,7 @@ import "swiper/css/bundle";
 import "swiper/css/autoplay";
 import HomeListing from "./HomeListing";
 import { useSelector } from "react-redux";
+import ListingCard from "./ListingCard";
 
 const Home = () => {
   const { currentUser } = useSelector((store) => store.user);
@@ -16,25 +17,36 @@ const Home = () => {
   const [rentListings, setRentListings] = useState(null);
   const [saleListings, setSaleListings] = useState(null);
 
-  console.log(userListings);
+  // console.log(userListings);
 
   let allListings = null;
   if (offerListings && rentListings && saleListings) {
     allListings = [
       {
+        type: userListings,
+        title: "Your listings",
+        searchQuery: null,
+        errorMsg: currentUser
+          ? " You don't have any listings posted. Follow the steps by filling in the necessary details required regarding your property. In few simple steps your property will go live on ViharEstate.com"
+          : "Please Sign In to see your listings",
+      },
+      {
         type: offerListings,
-        text: "offers",
+        title: "Recent offers",
         searchQuery: "offer=true",
+        errorMsg: "No offers available",
       },
       {
         type: rentListings,
-        text: "places for rent",
+        title: " Recent places for rent",
         searchQuery: "type=rent",
+        errorMsg: "No places for rent available",
       },
       {
         type: saleListings,
-        text: "places for sale",
+        title: "Recent places for sale",
         searchQuery: "type=sell",
+        errorMsg: "No places for sale available",
       },
     ];
   }
@@ -64,7 +76,7 @@ const Home = () => {
     };
 
     const fetchUserListings = async () => {
-      const res = await fetch("/api/listing/" + currentUser._id);
+      const res = await fetch("/api/user/listings/" + currentUser._id);
       const data = await res.json();
       setUserListings(data);
     };
@@ -72,7 +84,7 @@ const Home = () => {
     if (currentUser) {
       fetchUserListings();
     } else {
-      setUserListings("Please sign-in to see your listings");
+      setUserListings(null);
     }
 
     fetchRentListings();
@@ -116,8 +128,9 @@ const Home = () => {
           <HomeListing
             key={listing.text}
             listings={listing.type}
-            text={listing.text}
+            title={listing.title}
             searchQuery={listing.searchQuery}
+            errorMsg={listing.errorMsg}
           />
         ))}
       </div>
