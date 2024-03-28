@@ -61,11 +61,13 @@ export const getListings = async (req, res, next) => {
     const limit = parseInt(req.query.limit) || 9;
     const userId = req.query.currentUserId || "xx";
     const startIndex = parseInt(req.query.startIndex) || 0;
+    const myListings = req.query.myListings === "true" ? true : false || false;
 
     let offer = req.query.offer;
     if (offer === undefined || offer === "false") {
       offer = { $in: [false, true] };
     }
+
     let furnished = req.query.furnished;
     if (furnished === undefined || furnished === "false") {
       furnished = { $in: [false, true] };
@@ -90,7 +92,8 @@ export const getListings = async (req, res, next) => {
       furnished,
       parking,
       type,
-      userRef: { $nin: userId },
+      userRef: myListings ? { $in: userId } : { $nin: userId },
+      // userRef:{$in : userId} //: { $nin: userId },
     })
       .sort({
         [sort]: order,
