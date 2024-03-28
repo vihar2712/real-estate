@@ -11,9 +11,12 @@ import { useSelector } from "react-redux";
 const Home = () => {
   const { currentUser } = useSelector((store) => store.user);
   SwiperCore.use([Navigation, Autoplay]);
+  const [userListings, setUserListings] = useState(null);
   const [offerListings, setOfferListings] = useState(null);
   const [rentListings, setRentListings] = useState(null);
   const [saleListings, setSaleListings] = useState(null);
+
+  console.log(userListings);
 
   let allListings = null;
   if (offerListings && rentListings && saleListings) {
@@ -38,7 +41,7 @@ const Home = () => {
   useEffect(() => {
     const fetchOfferListings = async () => {
       const res = await fetch(
-        "/api/listing/get?offer=true&limit=4&currentUserId=" + currentUser?._id
+        "/api/listing/get?offer=true&limit=9&currentUserId=" + currentUser?._id
       );
       const data = await res.json();
       setOfferListings(data);
@@ -47,18 +50,30 @@ const Home = () => {
 
     const fetchRentListings = async () => {
       const res = await fetch(
-        "/api/listing/get?type=rent&limit=4&currentUserId=" + currentUser?._id
+        "/api/listing/get?type=rent&limit=9&currentUserId=" + currentUser?._id
       );
       const data = await res.json();
       setRentListings(data);
     };
     const fetchSaleListings = async () => {
       const res = await fetch(
-        "/api/listing/get?type=sell&limit=4&currentUserId=" + currentUser?._id
+        "/api/listing/get?type=sell&limit=9&currentUserId=" + currentUser?._id
       );
       const data = await res.json();
       setSaleListings(data);
     };
+
+    const fetchUserListings = async () => {
+      const res = await fetch("/api/listing/" + currentUser._id);
+      const data = await res.json();
+      setUserListings(data);
+    };
+
+    if (currentUser) {
+      fetchUserListings();
+    } else {
+      setUserListings("Please sign-in to see your listings");
+    }
 
     fetchRentListings();
     fetchSaleListings();
@@ -95,6 +110,7 @@ const Home = () => {
           </SwiperSlide>
         ))}
       </Swiper>
+
       <div className="py-10">
         {allListings?.map((listing) => (
           <HomeListing

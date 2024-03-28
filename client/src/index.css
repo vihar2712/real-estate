@@ -4,4 +4,10 @@
 
 body {
   background-color: #f1f5f1;
+  --swiper-theme-color: #a1a5aa;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  font-weight: bold;
 }
