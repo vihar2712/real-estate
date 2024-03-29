@@ -46,9 +46,9 @@ const HomeListing = ({ listings, title, searchQuery, errorMsg }) => {
         <Swiper navigation className="w-full">
           {newChunk?.map((listings, index) => (
             <SwiperSlide
-              key={index}
+            key={index}
               className={
-                "flex gap-6 sm:px-16 " +
+                "flex gap-6 px-5 sm:px-16 " +
                 (listings.length === chunkSize
                   ? "justify-center"
                   : "justify-normal")
