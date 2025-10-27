@@ -6,6 +6,7 @@ import authRoute from "./routes/auth.route.js";
 import listingRoute from "./routes/listing.route.js";
 import cookieParser from "cookie-parser";
 import path from "path";
+import cors from "cors";
 
 dotenv.config();
 
@@ -25,13 +26,10 @@ app.use(express.json()); // by default we are not allowed to send any JSON data 
 
 app.use(cookieParser()); // used to get the access token from the cookie which is stored once user signs-in.
 
-// app.use(
-//   cors({
-//     origin: ["https://real-estate-backend-weld.vercel.app"],
-//     methods: ["POST", "GET"],
-//     credentials: true,
-//   })
-// );
+app.use(cors({
+  origin: [process.env.APP_BACKEND_URL],
+  credentials: true,
+}));
 
 app.listen(3010, (req, res) => {
   console.log("server listening on port 3010!!");
