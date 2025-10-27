@@ -1,3 +1,7 @@
+[build]
+  command = "npm run build"
+  publish = "client/dist" 
+
 [[redirects]]
   from = "/api/*"
   to = "https://real-estate-backend-31n7.onrender.com"
