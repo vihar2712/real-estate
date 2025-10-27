@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "/api/*"
+  to = "https://real-estate-backend-31n7.onrender.com"
+  status = 200
