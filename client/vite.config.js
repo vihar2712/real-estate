@@ -1,16 +1,29 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react-swc";
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  server: {
-    // host: "https://real-estate-backend-weld.vercel.app",
-    proxy: {
-      "/api": {
-        target: "http://localhost:3000",
-        secure: false,
+export default defineConfig(({ mode }) => {
+  // Load env variables
+  const env = loadEnv(mode, process.cwd(), "");
+
+  // Choose backend based on mode
+  const backendUrl =
+    mode === "development"
+      ? "http://localhost:3010"
+      : "https://real-estate-backend-31n7.onrender.com";
+
+  return {
+    server: {
+      proxy: {
+        "/api": {
+          target: backendUrl,
+          changeOrigin: true,
+          secure: false,
+        },
       },
     },
-  },
-  plugins: [react()],
+    define: {
+      __APP_BACKEND_URL__: JSON.stringify(backendUrl),
+    },
+    plugins: [react()],
+  };
 });

@@ -33,8 +33,8 @@ app.use(cookieParser()); // used to get the access token from the cookie which i
 //   })
 // );
 
-app.listen(3000, (req, res) => {
-  console.log("server listening on port 3000!!");
+app.listen(3010, (req, res) => {
+  console.log("server listening on port 3010!!");
 });
 
 app.use("/api/user", userRoute);
