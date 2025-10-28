@@ -39,19 +39,19 @@ app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/listing", listingRoute);
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "client/dist")));
-  app.get("*", (req, res) => {
-    res.sendFile(
-      path.resolve(__dirname, "client", "dist", "index.html"),
-      function (err) {
-        if (err) {
-          res.status(500).send(err);
-        }
-      }
-    );
-  });
-}
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname, "client/dist")));
+//   app.get("*", (req, res) => {
+//     res.sendFile(
+//       path.resolve(__dirname, "client", "dist", "index.html"),
+//       function (err) {
+//         if (err) {
+//           res.status(500).send(err);
+//         }
+//       }
+//     );
+//   });
+// }
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
